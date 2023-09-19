@@ -1,11 +1,10 @@
 import { Text, View } from "react-native";
+import HomeScreen from "../screens/HomeScreen";
 
-function MainApp(props) {
+function MainApp() {
     return (
-        <View style={{ padding: 40 }}>
-            <Text>Hello From Main App</Text>
-
-        </View>
+        
+        <HomeScreen></HomeScreen>
     );
 }
 
