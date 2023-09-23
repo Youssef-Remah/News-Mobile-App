@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 export const newsContext = createContext();
 
 //TODO: Hide the API Key!
-const URL = 'https://newsapi.org/v2/everything?q=tesla&from=2023-08-21&sortBy=publishedAt&apiKey=970bca636b994d51ab09cca3cdade332';
+const URL = 'https://newsapi.org/v2/everything?q=tesla&from=2023-08-23&sortBy=publishedAt&apiKey=970bca636b994d51ab09cca3cdade332';
 
 function NewsContextProvider({ children }) {
 

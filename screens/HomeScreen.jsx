@@ -1,9 +1,11 @@
-import { Text, View, ActivityIndicator, FlatList } from "react-native";
+import { View, ActivityIndicator, FlatList } from "react-native";
 import { useContext } from "react";
 import { newsContext } from "../contexts/NewsContextProvider";
 import uuid from 'react-native-uuid';
+import NewsCard from "../components/NewsCard";
 
-function HomeScreen() {
+
+function HomeScreen({navigation}) {
 
     let news = useContext(newsContext);
 
@@ -21,19 +23,29 @@ function HomeScreen() {
         
         news = news['articles'];
 
+        news = news.filter(
+            (article)=>{
+                return article.source.name !== "[Removed]"
+            }
+        );
+
         news.forEach(
             (article) => {
 
                 article.source.id = uuid.v4();
             }
         );
+
+
     }
 
     const renderItem =  ({item}) => {
 
         return(
-            <View>
-                <Text>{item.source.name}</Text>
+            <View style={{margin:20}}>
+                <NewsCard props={{articleName: item.source.name, articleTitle: item.title,
+                    imageUrl:item.urlToImage,publishedDate: item.publishedAt}} navigation={navigation}/>
+
             </View>
         );
 
@@ -43,7 +55,7 @@ function HomeScreen() {
 
     return (
         
-        <View style={{ padding: 40 }}>
+        <View style={{ padding: 40 , backgroundColor:'linen'}}>
 
             <FlatList
                 data={news}
