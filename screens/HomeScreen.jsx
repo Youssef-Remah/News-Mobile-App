@@ -11,6 +11,7 @@ function HomeScreen({navigation}) {
 
     if(news == null || news == undefined)
     {
+
         return(
             <View>
                 <ActivityIndicator size="large" />

@@ -4,11 +4,13 @@ import { Text, View } from "react-native";
 export const newsContext = createContext();
 
 //TODO: Hide the API Key!
-const URL = 'https://newsapi.org/v2/everything?q=tesla&from=2023-08-23&sortBy=publishedAt&apiKey=970bca636b994d51ab09cca3cdade332';
+const URL = 'https://newsapi.org/v2/everything?q=tesla&from=2023-08-24&sortBy=publishedAt&apiKey=970bca636b994d51ab09cca3cdade332';
 
 function NewsContextProvider({ children }) {
 
     const [news, setNews] = useState(null);
+
+    const[isRequestFailed, setIsRequestFailed] = useState(false);
 
     async function fetchData() {
 
@@ -16,11 +18,8 @@ function NewsContextProvider({ children }) {
             const response = await fetch(URL);
 
             if (!response.ok) {
-                //throw new Error("Network response was not ok"); //TODO: Handle the response errors safely
-
-                <View>
-                    <Text>Network response was not ok</Text>
-                </View>
+                //throw new Error("Network request failed"); //TODO: Handle the response errors safely
+                setIsRequestFailed(true);
             }
 
             const data = await response.json();
@@ -32,9 +31,9 @@ function NewsContextProvider({ children }) {
         catch (error) {
             //throw error; //TODO: Handle the response errors safely
 
-            <View>
-                <Text>Error Encountered while loading the data...</Text>
-            </View>
+            //throw new Error("Unable to fetch data. Please try again later.");
+
+            setIsRequestFailed(true);
 
         }
     };
@@ -45,15 +44,16 @@ function NewsContextProvider({ children }) {
 
             try {
                 const newsData = await fetchData();
-
                 setNews(newsData);
             }
+            
             catch (error) {
-                //throw error; //TODO: Handle the response errors safely
+                // Handle the error here, e.g., set an error state
+                // console.error("Error loading data:", error);
 
-                <View>
-                    <Text>Error Encountered while loading the data...</Text>
-                </View>
+                // throw new Error("Unable to fetch data. Please try again later.");
+
+                setIsRequestFailed(true);
             }
 
         }
@@ -66,7 +66,15 @@ function NewsContextProvider({ children }) {
 
         <newsContext.Provider value={news}>
 
-            {children}
+            {
+                isRequestFailed? (
+                    <View>
+                        <Text>Unable to fetch data. Please try again later.</Text>
+                    </View>
+                ):(
+                    children
+                )
+            }
 
         </newsContext.Provider>
 
